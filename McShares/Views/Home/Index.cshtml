@@ -1,0 +1,34 @@
+﻿<form>
+    <span style="padding-bottom:2em;"> Upload Shares File</span>
+    <div class="custom-file">
+        <input type="file" class="custom-file-input" id="customFile">
+        <label class="custom-file-label" for="customFile">Choose file</label>
+    </div>
+    <div class="container">
+        <div style="margin-top:10px" class="alert alert-success margin-top-10" id="msg_success" hidden>
+        </div>
+        <div style="margin-top:10px"  class="alert alert-danger margin-top-10" id="msg_error" hidden>
+            
+        </div>
+    </div>
+</form>
+<script type="text/javascript">
+    $(function () {
+        $('#customFile').on('change', function () {
+            var formData = new FormData();
+            var opmlFile = $('#customFile')[0];
+            formData.append("opmlFile", opmlFile.files[0]);
+
+            $.ajax({
+                url: window.location.href + '/api/DocFile/PostDocFile',
+                type: 'POST',
+                data: formData,
+                cache: false,
+                contentType: false,
+                processData: false,
+                success: function (result) { $("#msg_success").removeAttr('hidden'); $("#msg_success").html(result); },
+                error: function (result) { $("#msg_error").removeAttr('hidden'); $("#msg_error").html(result.responseJSON); }
+            });
+        });
+    });
+</script>
